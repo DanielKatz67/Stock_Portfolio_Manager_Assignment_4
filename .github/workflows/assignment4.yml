@@ -56,14 +56,11 @@ jobs:
           name: capital_gain_service_image
           path: /tmp/capital_gain_service_image.tar
 
-#       TODO : check how to understand if the builds were successful
       - name: Create log file
         run: |
           echo "$(date -Iminutes)" > log.txt
           echo "Nadav Peled, Daniel Katz" >> log.txt
-#                 TODO : check how to understand if the builds were successful
           if [ "${{ steps.build_stock_service.outcome }}" == "success" ] && [ "${{ steps.build_capital_gain_service.outcome }}" == "success" ]; then
-#                    if [ "$stock_service_status" == "success" ] && [ "$capgain_service_status" == "success" ]; then
           echo "images successfully built" >> log.txt
           else
           echo "images not able to be built" >> log.txt
