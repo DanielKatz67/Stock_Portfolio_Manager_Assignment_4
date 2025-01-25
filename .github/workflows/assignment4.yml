@@ -61,7 +61,6 @@ jobs:
 
       - name: Create log file
         run: |
-#          echo "$(date -Iminutes)" > log.txt
           echo "${{ env.WORKFLOW_START_TIME }}" > log.txt
           echo "Nadav Peled, Daniel Katz" >> log.txt
           if [ "${{ steps.build_stock_service.outcome }}" == "success" ] && [ "${{ steps.build_capital_gain_service.outcome }}" == "success" ]; then
