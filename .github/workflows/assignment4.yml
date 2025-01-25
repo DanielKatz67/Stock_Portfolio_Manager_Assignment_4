@@ -30,8 +30,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: ./stock_portfolio_app
-#          tags: ${{ secrets.DOCKER_USERNAME }}/stock_service:latest
-          tags: mydockerhubusername/stock_service:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/stock_service:latest
 
           push: true
 
