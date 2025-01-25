@@ -27,6 +27,7 @@ jobs:
 
       # Step to build and push the stock service image to Docker Hub
       - name: build_stock_service
+        id: build_stock_service
         uses: docker/build-push-action@v4
         with:
           context: ./stock_portfolio_app
@@ -41,6 +42,7 @@ jobs:
           path: /tmp/stock_portfolio_app_image.tar
 
       - name: build_capital_gain_service
+        id: build_capital_gain_service
         uses: docker/build-push-action@v4
         with:
           context: ./capital_gain_service
@@ -61,9 +63,9 @@ jobs:
           echo "$(date -Iminutes)" > log.txt
           echo "Nadav Peled, Daniel Katz" >> log.txt
 #       TODO : check how to understand if the builds were successful
-
-          #          if [ "$stock_service_status" == "success" ] && [ "$capgain_service_status" == "success" ]; then
-            echo "images successfully built" >> log.txt
+           if [ "${{ steps.build_stock_service.outcome }}" == "success" ] && [ "${{ steps.build_capital_gain_service.outcome }}" == "success" ]; then
+#          if [ "$stock_service_status" == "success" ] && [ "$capgain_service_status" == "success" ]; then
+               echo "images successfully built" >> log.txt
           else
             echo "images not able to be built" >> log.txt
           fi
