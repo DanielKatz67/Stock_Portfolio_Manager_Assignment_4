@@ -26,7 +26,7 @@ jobs:
 #          password: ${{ secrets.DOCKER_PASSWORD }}
 
       # Step to build and push the stock service image to Docker Hub
-      - name: Build and export stock_portfolio_app
+      - name: build_stock_service
         uses: docker/build-push-action@v4
         with:
           context: ./stock_portfolio_app
@@ -40,7 +40,7 @@ jobs:
           name: stock_portfolio_app_image
           path: /tmp/stock_portfolio_app_image.tar
 
-      - name: Build and export capital_gain_service
+      - name: build_capital_gain_service
         uses: docker/build-push-action@v4
         with:
           context: ./capital_gain_service
@@ -57,8 +57,10 @@ jobs:
       - name: Set outputs for image builds
         id: set_outputs
         run: |
+          echo "${{ steps.build_stock_service.outcome }}"
+          echo "${{ steps.build_capital_gain_service.outcome }}"
           echo "stock_service_status=${{ steps.build_stock_service.outcome }}" >> $GITHUB_ENV
-          echo "capgain_service_status=${{ steps.build_capgain_service.outcome }}" >> $GITHUB_ENV
+          echo "capgain_service_status=${{ steps.build_capital_gain_service.outcome }}" >> $GITHUB_ENV
 
       - name: Create log file
         run: |
