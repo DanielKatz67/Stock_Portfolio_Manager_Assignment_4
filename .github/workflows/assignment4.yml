@@ -26,14 +26,14 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       # Step to build and push the stock service image to Docker Hub
-      - name: Build and push stock service image
+      - name: build1
         uses: docker/build-push-action@v4
         with:
           context: ./stock_portfolio_app
           tags: ${{ secrets.DOCKER_USERNAME }}/stock_service:latest
           push: true
 
-      - name: Build and push capital gain service image
+      - name: build2
         uses: docker/build-push-action@v4
         with:
           context: ./capital_gain_service
@@ -46,7 +46,7 @@ jobs:
       
           echo "Nadav Peled, Daniel Katz" >> log.txt
       
-          if [ "${{ steps.build_and_push_stock_service_image.outcome }}" == "success" ] && [ "${{ steps.build_and_push_capital_gain_service_image.outcome }}" == "success" ]; then
+          if [ "${{ steps.build1.outcome }}" == "success" ] && [ "${{ steps.build2.outcome }}" == "success" ]; then
             echo "image successfully built" >> log.txt
           else
             echo "image not able to be built" >> log.txt
