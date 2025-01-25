@@ -54,13 +54,7 @@ jobs:
           name: capital_gain_service_image
           path: /tmp/capital_gain_service_image.tar
 
-      - name: Set outputs for image builds
-        id: set_outputs
-        run: |
-          echo ${{ steps.build_stock_service.outcome }}
-          echo ${{ steps.build_capital_gain_service.outcome }}
-          echo "stock_service_status=${{ steps.build_stock_service.outcome }}" >> $GITHUB_ENV
-          echo "capgain_service_status=${{ steps.build_capital_gain_service.outcome }}" >> $GITHUB_ENV
+    # TODO : check how to understand if the builds were successful
 
       - name: Create log file
         run: |
