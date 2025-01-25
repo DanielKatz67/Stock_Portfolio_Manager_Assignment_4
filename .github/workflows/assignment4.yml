@@ -46,7 +46,7 @@ jobs:
       
           echo "Nadav Peled, Daniel Katz" >> log.txt
       
-          if [ "${{ steps.build_stock_service.outcome }}" == "success" ] && [ "${{ steps.build_capgain_service.outcome }}" == "success" ]; then
+          if [ "${{ steps.build_and_push_stock_service_image.outcome }}" == "success" ] && [ "${{ steps.build_and_push_capital_gain_service_image.outcome }}" == "success" ]; then
             echo "image successfully built" >> log.txt
           else
             echo "image not able to be built" >> log.txt
