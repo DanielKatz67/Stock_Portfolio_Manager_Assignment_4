@@ -45,6 +45,10 @@ jobs:
           echo "$(date -Iminutes)" > log.txt
       
           echo "Nadav Peled, Daniel Katz" >> log.txt
+          
+          echo ${{ steps.build1.outcome }} >> log.txt
+          
+          echo ${{ steps.build2.outcome }} >> log.txt
       
           if [ "${{ steps.build1.outcome }}" == "success" ] && [ "${{ steps.build2.outcome }}" == "success" ]; then
             echo "image successfully built" >> log.txt
