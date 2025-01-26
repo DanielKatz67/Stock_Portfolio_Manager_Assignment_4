@@ -11,15 +11,15 @@ jobs:
 
     steps:
       # Step to check out the repository code
+      - name: Capture workflow start time
+        run: echo "WORKFLOW_START_TIME=$(date -Iminutes)" >> $GITHUB_ENV
+
       - name: Checkout code
         uses: actions/checkout@v4
 
       # Step to set up Docker Buildx for building multi-platform images
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2 #latest stable version
-
-      - name: Capture workflow start time
-        run: echo "WORKFLOW_START_TIME=$(date -Iminutes)" >> $GITHUB_ENV
 
 #      # Step to log in to Docker Hub using credentials stored in GitHub Secrets
 #      - name: Log in to Docker Hub
