@@ -29,7 +29,7 @@ jobs:
 #          password: ${{ secrets.DOCKER_PASSWORD }}
 
       # Step to build and push the stock service image to Docker Hub
-      - name: build_stock_service
+      - name: Build and export stock service
         id: build_stock_service
         uses: docker/build-push-action@v4
         with:
@@ -44,7 +44,7 @@ jobs:
           name: stock_portfolio_app_image
           path: /tmp/stock_portfolio_app_image.tar
 
-      - name: build_capital_gain_service
+      - name: Build and export capital gain service
         id: build_capital_gain_service
         uses: docker/build-push-action@v4
         with:
