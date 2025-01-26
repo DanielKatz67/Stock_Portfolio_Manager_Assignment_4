@@ -13,12 +13,12 @@ logging.basicConfig(
 )
 
 # Read stock service ports from environment variables
-STOCK_SERVICE_1_PORT = os.getenv("STOCK_SERVICE_1_PORT", "8000")
-STOCK_SERVICE_1_CONTAINER_NAME = os.getenv("STOCK_SERVICE_1_CONTAINER_NAME")
+STOCK_SERVICE_PORT = os.getenv("STOCK_SERVICE_PORT", "8000")
+STOCK_SERVICE_CONTAINER_NAME = os.getenv("STOCK_SERVICE_CONTAINER_NAME")
 
 # Dynamically construct URLs based on ports
-STOCK_SERVICE_1_URL = f"http://{STOCK_SERVICE_1_CONTAINER_NAME}:{STOCK_SERVICE_1_PORT}/stocks"
-STOCK_SERVICE_1_VALUE_URL = f"http://{STOCK_SERVICE_1_CONTAINER_NAME}:{STOCK_SERVICE_1_PORT}/stock-value"
+STOCK_SERVICE_URL = f"http://{STOCK_SERVICE_CONTAINER_NAME}:{STOCK_SERVICE_PORT}/stocks"
+STOCK_SERVICE_VALUE_URL = f"http://{STOCK_SERVICE_CONTAINER_NAME}:{STOCK_SERVICE_PORT}/stock-value"
 
 
 def _fetch_stock_data(portfolio):
@@ -26,8 +26,8 @@ def _fetch_stock_data(portfolio):
     stock_data_1 = []
     try:
         if not portfolio or portfolio == "stocks1":
-            logging.info(f"Fetching data from {STOCK_SERVICE_1_URL}")
-            stock_data_1 += requests.get(STOCK_SERVICE_1_URL).json()
+            logging.info(f"Fetching data from {STOCK_SERVICE_URL}")
+            stock_data_1 += requests.get(STOCK_SERVICE_URL).json()
     except requests.RequestException as e:
         logging.error(f"Error fetching data from stock services: {e}")
         raise
@@ -47,7 +47,7 @@ def _filter_stocks(stock_data, numSharesGt, numSharesLt):
 def _fetch_current_value(stock):
     """Fetch the current price for a specific stock based on its portfolio."""
     stock_value_url = (
-        f"{STOCK_SERVICE_1_VALUE_URL}/{stock['id']}"
+        f"{STOCK_SERVICE_VALUE_URL}/{stock['id']}"
         # if stock.get('portfolio') == "stocks1"
         # else f"{STOCK_SERVICE_2_VALUE_URL}/{stock['id']}"
     )
