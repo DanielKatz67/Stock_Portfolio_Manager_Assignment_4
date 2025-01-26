@@ -25,36 +25,6 @@ services:
       - mongodb
     restart: always
 
-#  stock_service_1_b:
-#    build:
-#      context: ./stock_portfolio_app/
-#    container_name: stock_service-container-1-b
-#    ports:
-#      - "5004:8000"  # Host: 5004 -> Container: 8000
-#    expose:
-#      - 8000
-#    environment:
-#      - MONGO_COLLECTION=stock_portfolio_1
-#      - FLASK_PORT=8000  # Internal port Flask listens to
-#    depends_on:
-#      - mongodb
-#    restart: always
-#
-#  stock_service_2:
-#    build:
-#      context: ./stock_portfolio_app/
-#    container_name: stock_service-container-2
-#    ports:
-#      - "5002:8000"  # Host: 5002 -> Container: 8000
-#    expose:
-#      - 8000
-#    environment:
-#      - MONGO_COLLECTION=stock_portfolio_2
-#      - FLASK_PORT=8000
-#    depends_on:
-#      - mongodb
-#    restart: always
-
   capgain_service:
     build:
       context: ./capital_gain_service/
@@ -65,24 +35,9 @@ services:
       - FLASK_PORT=8080  # Internal port Flask listens to
       - STOCK_SERVICE_1_PORT=8000
       - STOCK_SERVICE_1_CONTAINER_NAME=stock_service-container-1-a
-#      - STOCK_SERVICE_2_PORT=8000
-#      - STOCK_SERVICE_2_CONTAINER_NAME=stock_service-container-2
     depends_on:
       - stock_service_1_a
-#      - stock_service_1_b
-#      - stock_service_2
     restart: always
-
-#  reverse:
-#    build:
-#        context: ./NGINX/
-#    ports:
-#      - "80:80"
-#    depends_on:
-#      - stock_service_1_a
-#      - stock_service_1_b
-#      - stock_service_2
-#    restart: always
 
 volumes:
   mongo-data:
