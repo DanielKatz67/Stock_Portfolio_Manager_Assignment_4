@@ -142,6 +142,7 @@ jobs:
 
       # Check if the tests passed
       - name: Update log file
+        if: always()
         run: |
           if [ "${{ steps.run_tests.outcome }}" == "success" ] ; then
           echo "tests succeeded" >> log.txt
@@ -154,7 +155,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: assn4_test_results
-          path: tests/assn4_tests.py
+          path: tests/assn4_test_results.txt
 
       - name: Upload log file
         if: always()
