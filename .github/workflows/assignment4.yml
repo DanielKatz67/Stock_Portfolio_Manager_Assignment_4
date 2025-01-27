@@ -14,6 +14,11 @@ jobs:
       - name: Capture workflow start time
         run: echo "WORKFLOW_START_TIME=$(date -Iminutes)" >> $GITHUB_ENV
 
+      - name: Create log file
+        run: |
+          echo "${{ env.WORKFLOW_START_TIME }}" > log.txt
+          echo "Nadav Peled, Daniel Katz" >> log.txt
+
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -49,10 +54,8 @@ jobs:
           name: capital_gain_service_image
           path: /tmp/capital_gain_service_image.tar
 
-      - name: Create log file
+      - name: Update log file
         run: |
-          echo "${{ env.WORKFLOW_START_TIME }}" > log.txt
-          echo "Nadav Peled, Daniel Katz" >> log.txt
           if [ "${{ steps.build_stock_portfolio_app.outcome }}" == "success" ] && [ "${{ steps.build_capital_gain_service.outcome }}" == "success" ]; then
           echo "image successfully built" >> log.txt
           else
@@ -72,6 +75,10 @@ jobs:
     needs: build
 
     steps:
+      - name: Create test results file
+        run: |
+          touch assn4_test_results.txt
+
       # 1. download Docker images, set up Docker Compose
       # Step to download stock_portfolio_app image
       - name: Checkout code
@@ -138,7 +145,7 @@ jobs:
       - name: Run tests
         id: run_tests
         run: |
-          pytest -v tests/assn4_tests.py > assn4_test_results.txt
+          pytest -v tests/assn4_tests.py >> assn4_test_results.txt
 
       # Check if the tests passed
       - name: Update log file
