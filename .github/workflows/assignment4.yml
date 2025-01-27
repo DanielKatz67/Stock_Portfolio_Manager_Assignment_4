@@ -154,7 +154,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: assn4_test_results
-          path: tests/assn4_test_results.txt
+          path: assn4_test_results.txt
 
       - name: Upload log file
         if: always()
