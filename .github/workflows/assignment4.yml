@@ -86,13 +86,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Create Create test results file
+      - name: Create test results file
         run: |
           cd tests
           touch assn4_test_results.txt
 
       - name: Verify Create test results file creating
         run: |
+          cd tests
           ls -l
           pwd
           cat tests/assn4_test_results.txt || echo "tests/assn4_test_results.txt not found!"
@@ -119,7 +120,7 @@ jobs:
         run: |
           echo "/tmp directory:"
           ls /tmp
-          echo "\n root directory:"
+          echo "root directory:"
           ls .
 
       # Step to load Docker images
