@@ -47,10 +47,10 @@ def test_get_stocks():
 # Test 4
 # Test GET /stock-value/{ID}
 def test_get_stock_value():
-    global STOCK_STOCK_VALUES
+    global STOCK_VALUES
     for symbol in ["NVDA", "AAPL", "GOOG"]:
         response = requests.get(f"{BASE_URL}/stock-value/{STOCK_IDS[symbol]}")
-        STOCK_STOCK_VALUES[symbol] = response.json()["stock_value"]
+        STOCK_VALUES[symbol] = response.json()["stock_value"]
         assert response.status_code == 200
         assert response.json()["symbol"] == symbol
 
@@ -60,13 +60,8 @@ def test_get_stock_value():
 def test_get_portfolio_value():
     response = requests.get(f"{BASE_URL}/portfolio-value")
     assert response.status_code == 200
-
     pv = response.json()["portfolio value"]
-    print("Portfolio Value:", pv)
-
     stocks_value = sum(STOCK_VALUES[symbol] for symbol in ["NVDA", "AAPL", "GOOG"])
-    print(f"stocks_value = {stocks_value}")
-
     assert pv * 0.97 <= stocks_value <= pv * 1.03
 
 
