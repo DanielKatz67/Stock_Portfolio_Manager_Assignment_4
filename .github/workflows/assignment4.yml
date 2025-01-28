@@ -132,6 +132,7 @@ jobs:
       - name: verify downloaded artifacts
         run: |
           ls /tmp
+          ls .
 
       # Step to load Docker images
       - name: Load Docker images
@@ -151,6 +152,10 @@ jobs:
       # Before starting the tests, wait for the container to initialize
       - name: Wait for the container to initialize
         run: sleep 5
+
+      - name: Debug File Path
+        if: always()
+        run: pwd && ls -l
 
       # Check if the containers are up and running
       - name: Update log file
