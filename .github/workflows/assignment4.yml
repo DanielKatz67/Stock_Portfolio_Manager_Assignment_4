@@ -20,10 +20,10 @@ jobs:
           echo "Nadav Peled, Daniel Katz" >> log.txt
 
       - name: Check dir
-        run: ls -l
-
-      - name: Check tmp dir
-        run: ls -l /tmp
+        run: |
+          ls -l
+          pwd
+          cat log.txt
 
       - name: Checkout code
         uses: actions/checkout@v4
