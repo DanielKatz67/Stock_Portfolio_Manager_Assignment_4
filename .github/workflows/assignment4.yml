@@ -61,6 +61,7 @@ jobs:
 
       # TODO: try to change the images to fail this step
       - name: Update log file
+        if: always()
         run: |
           if [ "${{ steps.build_stock_portfolio_app.outcome }}" == "success" ] && [ "${{ steps.build_capital_gain_service.outcome }}" == "success" ]; then
           echo "image successfully built" >> log.txt
