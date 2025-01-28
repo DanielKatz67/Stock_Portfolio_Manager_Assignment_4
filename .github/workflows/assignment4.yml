@@ -86,6 +86,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # TODO: take time, use instead 'hoverkraft-tech/compose-action@v2.0.1'? see https://github.com/marketplace/actions/docker-compose-action
       - name: Install Docker Compose
         run: |
           sudo apt-get update
