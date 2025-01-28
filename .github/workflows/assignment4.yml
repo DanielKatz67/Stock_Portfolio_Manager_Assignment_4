@@ -60,6 +60,12 @@ jobs:
           name: capital_gain_service_image
           path: /tmp/capital_gain_service_image.tar
 
+      - name: Check dir
+        run: |
+          ls -l
+          pwd
+          cat log.txt
+
       - name: Update log file
         run: |
           if [ "${{ steps.build_stock_portfolio_app.outcome }}" == "success" ] && [ "${{ steps.build_capital_gain_service.outcome }}" == "success" ]; then
@@ -67,6 +73,12 @@ jobs:
           else
           echo "image not able to be built" >> log.txt
           fi
+
+      - name: Check dir
+        run: |
+          ls -l
+          pwd
+          cat log.txt
 
       - name: Debug File Path
         if: always()
@@ -92,10 +104,10 @@ jobs:
           touch assn4_test_results.txt
 
       - name: Check dir
-        run: ls -l
-
-      - name: Check tmp dir
-        run: ls -l /tmp
+        run: |
+          ls -l
+          pwd
+          cat assn4_test_results.txt
 
       # 1. download Docker images, set up Docker Compose
       # Step to download stock_portfolio_app image
@@ -178,6 +190,12 @@ jobs:
       - name: Debug File Path
         if: always()
         run: pwd && ls -l
+
+      - name: Check dir
+        run: |
+          ls -l
+          pwd
+          cat assn4_test_results.txt
 
       - name: Upload test results
         if: always()
