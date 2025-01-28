@@ -38,10 +38,10 @@ class StockController:
         if not self.validate_symbol(data['symbol']):
             return False
 
-        if not self.validate_purchase_date(data['purchase date']):
+        if not self.validate_purchase_price(data['purchase price']):
             return False
 
-        if not self.validate_purchase_price(data['purchase price']):
+        if not self.validate_purchase_date(data['purchase date']):
             return False
 
         if not self.validate_number_of_shares(data['shares']):
