@@ -217,6 +217,7 @@ jobs:
         with:
           name: log-file
           path: log.txt
+          overwrite: true
 
       # Step to shut down Docker Compose
       - name: Tear down services
