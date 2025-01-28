@@ -8,10 +8,10 @@ WORKDIR /app
 COPY . /app
 
 # Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txtMISTAKE
 
 # Expose the application port
-EXPOSE 8000
+EXPOSE 8000MISTAKE
 
 # Set the command to run the application
-CMD ["python", "main.pyMISTAKE"]
+CMD ["python", "main.py"]
