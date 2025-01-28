@@ -68,6 +68,12 @@ jobs:
           echo "image not able to be built" >> log.txt
           fi
 
+      - name: Debug File Path
+        if: always()
+        run: |
+          cat log.txt
+          pwd && ls -l
+
       - name: Upload log file
         if: always()
         uses: actions/upload-artifact@v4
@@ -134,6 +140,7 @@ jobs:
 
       # Check if the containers are up and running
       - name: Update log file
+        if: always()
         run: |
           if [ "${{ steps.set_up_docker_compose.outcome }}" == "success" ] ; then
           echo "Container up and running" >> log.txt
