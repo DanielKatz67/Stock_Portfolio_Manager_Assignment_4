@@ -81,16 +81,10 @@ jobs:
     needs: build
 
     steps:
-      # 1. download Docker images, set up Docker Compose
-      # Step to download stock_portfolio_app image
+      ### 1. download Docker images, set up Docker Compose ###
+
       - name: Checkout code
         uses: actions/checkout@v4
-
-#      # TODO: take time, use instead 'hoverkraft-tech/compose-action@v2.0.1'? see https://github.com/marketplace/actions/docker-compose-action
-#      - name: Install Docker Compose
-#        run: |
-#          sudo apt-get update
-#          sudo apt-get install -y docker-compose
 
       - name: Create test results file
         run: |
@@ -122,7 +116,7 @@ jobs:
           name: capital_gain_service_image
           path: /tmp
 
-      - name: verify downloaded artifacts
+      - name: Verify downloaded artifacts
         run: |
           echo "/tmp directory:"
           ls /tmp
@@ -133,11 +127,6 @@ jobs:
         run: |
           docker load --input /tmp/stock_portfolio_app_image.tar
           docker load --input /tmp/capital_gain_service_image.tar
-
-#      - name: Set up Docker Compose
-#        id: set_up_docker_compose
-#        run: |
-#          docker-compose -f docker-compose-workflow.yml up -d
 
       - name: Set up Docker Compose
         id: set_up_docker_compose
@@ -162,7 +151,8 @@ jobs:
           echo "Container failed to run" >> log.txt
           fi
 
-      # 2. set up python and pytest environment
+      ### 2. set up python and pytest environment ###
+
       - name: Set up Python
         uses: actions/setup-python@v4
 
@@ -174,12 +164,10 @@ jobs:
 
       - name: Run tests
         id: run_tests
-        run: |
-          pytest -v tests/assn4_tests.py >> tests/assn4_test_results.txt
+        run: pytest -v tests/assn4_tests.py >> tests/assn4_test_results.txt
 
       - name: Verify Run tests
-        run: |
-          cat tests/assn4_test_results.txt || echo "assn4_test_results.txt not found!"
+        run: cat tests/assn4_test_results.txt || echo "assn4_test_results.txt not found!"
 
       - name: Update log file
         if: always()
