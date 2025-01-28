@@ -86,11 +86,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # TODO: take time, use instead 'hoverkraft-tech/compose-action@v2.0.1'? see https://github.com/marketplace/actions/docker-compose-action
-      - name: Install Docker Compose
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y docker-compose
+#      # TODO: take time, use instead 'hoverkraft-tech/compose-action@v2.0.1'? see https://github.com/marketplace/actions/docker-compose-action
+#      - name: Install Docker Compose
+#        run: |
+#          sudo apt-get update
+#          sudo apt-get install -y docker-compose
 
       - name: Create test results file
         run: |
@@ -134,10 +134,17 @@ jobs:
           docker load --input /tmp/stock_portfolio_app_image.tar
           docker load --input /tmp/capital_gain_service_image.tar
 
+#      - name: Set up Docker Compose
+#        id: set_up_docker_compose
+#        run: |
+#          docker-compose -f docker-compose-workflow.yml up -d
+
       - name: Set up Docker Compose
-        id: set_up_docker_compose
-        run: |
-          docker-compose -f docker-compose-workflow.yml up -d
+        uses: hoverkraft-tech/compose-action@v2.0.1
+        with:
+          compose-file: docker-compose-workflow.yml
+          action: up
+          detached: true
 
       # Before starting the tests, wait for the container to initialize
       - name: Wait for the container to initialize
@@ -165,11 +172,14 @@ jobs:
           pip install pytest requests
           pip install -r stock_portfolio_app/requirements.txt
 
-      #TODO: right tests!
       - name: Run tests
         id: run_tests
         run: |
           pytest -v tests/assn4_tests.py >> assn4_test_results.txt
+
+      - name: Verify Run tests
+        run: |
+          cat tests/assn4_test_results.txt || echo "assn4_test_results.txt not found!"
 
       - name: Log Docker Compose Status
         run: docker-compose logs
