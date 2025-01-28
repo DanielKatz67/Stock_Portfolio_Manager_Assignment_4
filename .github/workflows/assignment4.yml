@@ -10,15 +10,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step to check out the repository code
+
       - name: Capture workflow start time
         run: echo "WORKFLOW_START_TIME=$(date -Iminutes)" >> $GITHUB_ENV
+          -
+      # Check out the repository code
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Create log file
         run: |
           echo "${{ env.WORKFLOW_START_TIME }}" > log.txt
           echo "Nadav Peled, Daniel Katz" >> log.txt
-        working-directory: $GITHUB_WORKSPACE
 
       - name: Check dir
         run: |
@@ -26,10 +29,6 @@ jobs:
           pwd
           cat log.txt || echo "log.txt not found!"
 
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      # Step to set up Docker Buildx for building multi-platform images
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2 #latest stable version
 
@@ -75,17 +74,11 @@ jobs:
           echo "image not able to be built" >> log.txt
           fi
 
-      - name: Check dir
+      - name: Check dir after update
         run: |
           ls -l
           pwd
           cat log.txt || echo "log.txt not found!"
-
-      - name: Debug File Path
-        if: always()
-        run: |
-          cat log.txt || echo "log.txt not found!"
-          pwd && ls -l
 
       - name: Upload log file
         if: always()
@@ -100,6 +93,11 @@ jobs:
     needs: build
 
     steps:
+      # 1. download Docker images, set up Docker Compose
+      # Step to download stock_portfolio_app image
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Create test results file
         run: |
           touch assn4_test_results.txt
@@ -109,11 +107,6 @@ jobs:
           ls -l
           pwd
           cat assn4_test_results.txt
-
-      # 1. download Docker images, set up Docker Compose
-      # Step to download stock_portfolio_app image
-      - name: Checkout code
-        uses: actions/checkout@v4
 
       - name: Download stock_portfolio_app image
         uses: actions/download-artifact@v4
