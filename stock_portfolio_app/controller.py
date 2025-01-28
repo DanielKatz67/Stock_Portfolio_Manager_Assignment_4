@@ -38,6 +38,9 @@ class StockController:
         if not self.validate_symbol(data['symbol']):
             return False
 
+        if not self.validate_purchase_date(data['purchase price']):
+            return False
+
         if not self.validate_purchase_price(data['purchase price']):
             return False
 
@@ -55,6 +58,15 @@ class StockController:
                 return False
         except (ValueError, TypeError):
             logging.error("Validation failed: 'purchase price' must be a valid number.")
+            return False
+        return True
+
+    @staticmethod
+    def validate_purchase_date(purchase_price):
+        try:
+            datetime.strptime(purchase_price, "%d-%m-%Y")
+        except ValueError:
+            logging.error("Validation failed: 'purchase date' must be a valid date in the format 'dd-mm-yyyy'.")
             return False
         return True
 
