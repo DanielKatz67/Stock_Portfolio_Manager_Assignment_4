@@ -100,13 +100,14 @@ jobs:
 
       - name: Create test results file
         run: |
+          cd tests
           touch assn4_test_results.txt
 
       - name: Check dir
         run: |
           ls -l
           pwd
-          cat assn4_test_results.txt
+          cat tests/assn4_test_results.txt || echo "tests/assn4_test_results.txt not found!"
 
       - name: Download stock_portfolio_app image
         uses: actions/download-artifact@v4
@@ -189,7 +190,7 @@ jobs:
         run: |
           ls -l
           pwd
-          cat assn4_test_results.txt
+          cat tests/assn4_test_results.txt || echo "tests/assn4_test_results.txt not found!"
 
       - name: Upload test results
         if: always()
