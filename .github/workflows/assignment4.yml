@@ -18,12 +18,13 @@ jobs:
         run: |
           echo "${{ env.WORKFLOW_START_TIME }}" > log.txt
           echo "Nadav Peled, Daniel Katz" >> log.txt
+        working-directory: $GITHUB_WORKSPACE
 
       - name: Check dir
         run: |
           ls -l
           pwd
-          cat log.txt
+          cat log.txt || echo "log.txt not found!"
 
       - name: Checkout code
         uses: actions/checkout@v4
@@ -64,7 +65,7 @@ jobs:
         run: |
           ls -l
           pwd
-          cat log.txt
+          cat log.txt || echo "log.txt not found!"
 
       - name: Update log file
         run: |
@@ -78,12 +79,12 @@ jobs:
         run: |
           ls -l
           pwd
-          cat log.txt
+          cat log.txt || echo "log.txt not found!"
 
       - name: Debug File Path
         if: always()
         run: |
-          cat log.txt
+          cat log.txt || echo "log.txt not found!"
           pwd && ls -l
 
       - name: Upload log file
@@ -202,7 +203,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: assn4_test_results
-          path: assn4_test_results.txt
+          path: tests/assn4_test_results.txt
 
       - name: Upload log file
         if: always()
