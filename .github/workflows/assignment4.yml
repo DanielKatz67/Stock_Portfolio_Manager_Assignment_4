@@ -136,7 +136,7 @@ jobs:
       - name: Set up Docker Compose
         id: set_up_docker_compose
         run: |
-          docker-compose -f docker-compose.yml up -d
+          docker-compose -f docker-compose-workflow.yml up -d
 
       # Before starting the tests, wait for the container to initialize
       - name: Wait for the container to initialize
