@@ -169,6 +169,7 @@ jobs:
           fi
 
       - name: Debug File Path
+        if: always()
         run: pwd && ls -l
 
       - name: Upload test results
