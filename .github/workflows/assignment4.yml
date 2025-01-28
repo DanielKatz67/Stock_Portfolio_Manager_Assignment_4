@@ -19,6 +19,12 @@ jobs:
           echo "${{ env.WORKFLOW_START_TIME }}" > log.txt
           echo "Nadav Peled, Daniel Katz" >> log.txt
 
+      - name: Check dir
+        run: ls -l
+
+      - name: Check tmp dir
+        run: ls -l /tmp
+
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -78,6 +84,12 @@ jobs:
       - name: Create test results file
         run: |
           touch assn4_test_results.txt
+
+      - name: Check dir
+        run: ls -l
+
+      - name: Check tmp dir
+        run: ls -l /tmp
 
       # 1. download Docker images, set up Docker Compose
       # Step to download stock_portfolio_app image
