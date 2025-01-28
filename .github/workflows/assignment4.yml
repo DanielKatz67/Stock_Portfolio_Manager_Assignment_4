@@ -140,11 +140,11 @@ jobs:
 #          docker-compose -f docker-compose-workflow.yml up -d
 
       - name: Set up Docker Compose
+        id: set_up_docker_compose
         uses: hoverkraft-tech/compose-action@v2.0.1
         with:
           compose-file: docker-compose-workflow.yml
           action: up
-          detached: true
 
       # Before starting the tests, wait for the container to initialize
       - name: Wait for the container to initialize
@@ -175,14 +175,11 @@ jobs:
       - name: Run tests
         id: run_tests
         run: |
-          pytest -v tests/assn4_tests.py >> assn4_test_results.txt
+          pytest -v tests/assn4_tests.py >> tests/assn4_test_results.txt
 
       - name: Verify Run tests
         run: |
           cat tests/assn4_test_results.txt || echo "assn4_test_results.txt not found!"
-
-      - name: Log Docker Compose Status
-        run: docker-compose logs
 
       - name: Update log file
         if: always()
@@ -210,7 +207,10 @@ jobs:
 
       # Step to shut down Docker Compose
       - name: Tear down services
-        run: docker-compose down
+        uses: hoverkraft-tech/compose-action@v2.0.1
+        with:
+          compose-file: docker-compose-workflow.yml
+          action: down
 
 #  query: #TODO: verify this
 #    # The query job runs on the latest version of Ubuntu and depends on the test job
