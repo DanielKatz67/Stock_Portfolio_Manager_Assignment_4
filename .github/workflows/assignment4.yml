@@ -66,6 +66,7 @@ jobs:
           pwd
           cat log.txt || echo "log.txt not found!"
 
+# TODO: try to change the images to fail this step
       - name: Update log file
         run: |
           if [ "${{ steps.build_stock_portfolio_app.outcome }}" == "success" ] && [ "${{ steps.build_capital_gain_service.outcome }}" == "success" ]; then
@@ -121,6 +122,12 @@ jobs:
         with:
           name: capital_gain_service_image
           path: /tmp
+
+      - name: Download log file
+        uses: actions/download-artifact@v4
+        with:
+          name: log-file
+          path: .
 
       - name: verify downloaded artifacts
         run: |
