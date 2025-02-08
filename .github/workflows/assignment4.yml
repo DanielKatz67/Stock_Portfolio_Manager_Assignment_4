@@ -271,17 +271,20 @@ jobs:
 
       - name: Read query.txt and generate response.txt
         run: |
+          RESPONSE_FILE="tests/response.txt"
           while IFS= read -r line; do
             if [[ $line == stocks:* ]]; then
               qs="${line#stocks: }"
               response=$(curl -s "http://localhost:5001/stocks?$qs")
-              echo "query: $line" >> response.txt
-              echo "response: $response" >> response.txt
+              echo "query: $line" >> $RESPONSE_FILE
+              echo "response: $response" >> $RESPONSE_FILE
             elif [[ $line == capital-gains:* ]]; then
               qs="${line#capital-gains: }"
-              response=$(curl -s "http://localhost:5001/capital-gains?$qs")
-              echo "query: $line" >> response.txt
-              echo "response: $response" >> response.txt
+              response=$(curl -s "http://localhost:5003/capital-gains?$qs")
+              echo "query: $line" >> $RESPONSE_FILE
+              echo "response: $response" >> $RESPONSE_FILE
+            else
+              continue
             fi
           done < query.txt
 
