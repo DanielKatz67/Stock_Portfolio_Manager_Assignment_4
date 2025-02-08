@@ -283,13 +283,13 @@ jobs:
       - name: Print response.txt
         run: | 
           echo "Printing response.txt:"
-          cat response.txt
+          cat tests/response.txt
 
       - name: Upload response.txt
         uses: actions/upload-artifact@v4
         with:
           name: response.txt
-          path: response.txt
+          path: tests/response.txt
 
       - name: Tear down services
         uses: hoverkraft-tech/compose-action@v2.0.1
