@@ -1,4 +1,6 @@
 import json
+import os
+
 import pytest
 import requests
 
@@ -22,8 +24,10 @@ STOCK_DATA = []
 @pytest.fixture(scope="session", autouse=True)
 def load_stock_data():
     global STOCK_DATA
-    with open("stocks.json", "r") as file:
+    json_path = os.path.join(os.path.dirname(__file__), "stocks.json")
+    with open(json_path, "r") as file:
         STOCK_DATA = json.load(file)
+
 
 # Test 1
 # Runs once per module and automatically executes before tests
