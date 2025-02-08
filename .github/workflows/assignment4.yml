@@ -280,6 +280,8 @@ jobs:
           echo "Checking capital-gains with numsharesgt=30:"
           curl -s "http://localhost:5003/capital-gains?numsharesgt=30"
 
+        # TODO: capital-gains or capital gains? both on slides - ask Daniel
+        # TODO: "query: ..." in slides there is SorC/// - check
       - name: Read query.txt and generate response.txt
         run: |
           RESPONSE_FILE="tests/response.txt"
@@ -298,7 +300,6 @@ jobs:
               response=$(curl -s "http://localhost:5001/stocks?$qs" | jq .)
               echo "query: $line" >> $RESPONSE_FILE
               echo "response: $response" >> $RESPONSE_FILE
-          
             elif [[ $line == capital-gains:* ]]; then
               qs="${line#capital-gains:}"
               echo "➡️ Querying Capital Gains API: http://localhost:5003/capital-gains?$qs"
@@ -311,10 +312,10 @@ jobs:
               continue
             fi
           
-            echo "✅ Query: $line" | tee -a $RESPONSE_FILE
-            echo "📥 Response: $response" | tee -a $RESPONSE_FILE
-            echo "--------------------------------------" | tee -a $RESPONSE_FILE
+            echo "✅ Query: $line"
           
+          echo "📥 Response: $response"
+          echo "--------------------------------------"
           done < query.txt
 
       - name: Upload response.txt
