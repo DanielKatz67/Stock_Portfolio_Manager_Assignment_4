@@ -280,8 +280,6 @@ jobs:
           echo "Checking capital-gains with numsharesgt=30:"
           curl -s "http://localhost:5003/capital-gains?numsharesgt=30"
 
-        # TODO: capital-gains or capital gains? both on slides - ask Daniel
-        # TODO: "query: ..." in slides there is SorC/// - check
       - name: Read query.txt and generate response.txt
         run: |
           RESPONSE_FILE="tests/response.txt"

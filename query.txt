@@ -1,2 +1,12 @@
+stocks:
+stocks:name=NVIDIA Corporation
+stocks:symbol=AAPL
+stocks:purchase price=183.63
+stocks:purchase date=09-02-2024
 stocks:shares=7
+capital-gains:
+capital-gains:numshareslt=1&numsharesgt=40
+capital-gains:numshareslt=40
+capital-gains:numsharesgt=1
 capital-gains:numsharesgt=30
+capital-gains:numshareslt=30&numsharesgt=32
