@@ -1,20 +1,29 @@
+import json
 import pytest
 import requests
 
 BASE_URL = "http://localhost:5001"
 STOCK_IDS = {}
 STOCK_VALUES = {}
+STOCK_DATA = []
 
-# Sample stock data
-stock1 = {"name": "NVIDIA Corporation", "symbol": "NVDA", "purchase price": 134.66, "purchase date": "18-06-2024", "shares": 7}
-stock2 = {"name": "Apple Inc.", "symbol": "AAPL", "purchase price": 183.63, "purchase date": "22-02-2024", "shares": 19}
-stock3 = {"name": "Alphabet Inc.", "symbol": "GOOG", "purchase price": 140.12, "purchase date": "24-10-2024", "shares": 14}
-stock4 = {"name": "Tesla, Inc.", "symbol": "TSLA", "purchase price": 194.58, "purchase date": "28-11-2022", "shares": 32}
-stock5 = {"name": "Microsoft Corporation", "symbol": "MSFT", "purchase price": 420.55, "purchase date": "09-02-2024", "shares": 35}
-stock6 = {"name": "Intel Corporation", "symbol": "INTC", "purchase price": 19.15, "purchase date": "13-01-2025", "shares": 10}
-stock7 = {"name": "Amazon.com, Inc.", "purchase price": 134.66, "purchase date": "18-06-2024", "shares": 7}
-stock8 = {"name": "Amazon.com, Inc.", "symbol": "AMZN", "purchase price": 134.66, "purchase date": "Tuesday, June 18, 2024", "shares": 7}
+# # Sample stock data
+# stock1 = {"name": "NVIDIA Corporation", "symbol": "NVDA", "purchase price": 134.66, "purchase date": "18-06-2024", "shares": 7}
+# stock2 = {"name": "Apple Inc.", "symbol": "AAPL", "purchase price": 183.63, "purchase date": "22-02-2024", "shares": 19}
+# stock3 = {"name": "Alphabet Inc.", "symbol": "GOOG", "purchase price": 140.12, "purchase date": "24-10-2024", "shares": 14}
+# stock4 = {"name": "Tesla, Inc.", "symbol": "TSLA", "purchase price": 194.58, "purchase date": "28-11-2022", "shares": 32}
+# stock5 = {"name": "Microsoft Corporation", "symbol": "MSFT", "purchase price": 420.55, "purchase date": "09-02-2024", "shares": 35}
+# stock6 = {"name": "Intel Corporation", "symbol": "INTC", "purchase price": 19.15, "purchase date": "13-01-2025", "shares": 10}
+# stock7 = {"name": "Amazon.com, Inc.", "purchase price": 134.66, "purchase date": "18-06-2024", "shares": 7}
+# stock8 = {"name": "Amazon.com, Inc.", "symbol": "AMZN", "purchase price": 134.66, "purchase date": "Tuesday, June 18, 2024", "shares": 7}
 
+
+# Load stock data from JSON file at the beginning
+@pytest.fixture(scope="session", autouse=True)
+def load_stock_data():
+    global STOCK_DATA
+    with open("stocks.json", "r") as file:
+        STOCK_DATA = json.load(file)
 
 # Test 1
 # Runs once per module and automatically executes before tests
@@ -22,7 +31,7 @@ stock8 = {"name": "Amazon.com, Inc.", "symbol": "AMZN", "purchase price": 134.66
 def posted_stocks():
     """Posts all initial stocks and stores their IDs globally."""
     global STOCK_IDS
-    for stock in [stock1, stock2, stock3]:
+    for stock in STOCK_DATA[:3]:  # Posting only first 3 stocks
         response = requests.post(f"{BASE_URL}/stocks", json=stock)
         assert response.status_code == 201
         STOCK_IDS[stock["symbol"]] = response.json()["id"]
@@ -68,7 +77,8 @@ def test_get_portfolio_value():
 # Test 6
 # Test POST /stocks with missing symbol
 def test_post_invalid_stock():
-    response = requests.post(f"{BASE_URL}/stocks", json=stock7)
+    invalid_stock = STOCK_DATA[6]  # Stock missing "symbol"
+    response = requests.post(f"{BASE_URL}/stocks", json=invalid_stock)
     assert response.status_code == 400
 
 
@@ -89,5 +99,6 @@ def test_get_deleted_stock():
 # Test 9
 # Test POST /stocks with invalid purchase date
 def test_post_invalid_stock_date():
-    response = requests.post(f"{BASE_URL}/stocks", json=stock8)
+    invalid_stock_date = STOCK_DATA[7]  # Invalid purchase date format
+    response = requests.post(f"{BASE_URL}/stocks", json=invalid_stock_date)
     assert response.status_code == 400
