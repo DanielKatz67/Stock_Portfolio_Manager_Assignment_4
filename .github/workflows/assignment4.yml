@@ -244,7 +244,7 @@ jobs:
 
       - name: Set up Docker Compose
         id: set_up_docker_compose
-        uses: hoverkraft-tech/compose-action@v2.0.1
+        uses: hoverkraft-tech/compose-action@v2.0.1 #todo: why use hoverkraft-tech/compose-action@v2.0.1? why compose another version?
         with:
           compose-file: docker-compose-workflow.yml
           action: up
@@ -254,3 +254,37 @@ jobs:
 
       - name: Verify Running Containers
         run: docker ps
+
+      - name: Execute POST requests for stocks # TODO: change the http://localhost:5001/stocks to some variable
+        run: |
+          for stock in stock1 stock2 stock3 stock4 stock5 stock6; do
+            curl -X POST -H "Content-Type: application/json" -d @${stock}.json http://localhost:5001/stocks
+          done
+
+      - name: Read query.txt and generate response.txt
+        run: |
+          while IFS= read -r line; do
+            if [[ $line == stocks:* ]]; then
+              qs="${line#stocks: }"
+              response=$(curl -s "http://localhost:5001/stocks?$qs")
+              echo "query: $line" >> response.txt
+              echo "response: $response" >> response.txt
+            elif [[ $line == capital-gains:* ]]; then
+              qs="${line#capital-gains: }"
+              response=$(curl -s "http://localhost:5001/capital-gains?$qs")
+              echo "query: $line" >> response.txt
+              echo "response: $response" >> response.txt
+            fi
+          done < query.txt
+
+      - name: Upload response.txt
+        uses: actions/upload-artifact@v4
+        with:
+          name: response.txt
+          path: response.txt
+
+      - name: Tear down services
+        uses: hoverkraft-tech/compose-action@v2.0.1
+        with:
+          compose-file: docker-compose-workflow.yml
+          action: down
