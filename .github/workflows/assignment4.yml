@@ -294,25 +294,24 @@ jobs:
           
             if [[ $line == stocks:* ]]; then
               qs="${line#stocks:}"
+              qs=$(jq -rn --arg str "$qs" '$str | @uri')
               echo "➡️ Querying Stocks API: http://localhost:5001/stocks?$qs"
               response=$(curl -s "http://localhost:5001/stocks?$qs" | jq .)
-              echo "query: $line" >> $RESPONSE_FILE
-              echo "response: $response" >> $RESPONSE_FILE
+             
             elif [[ $line == capital-gains:* ]]; then
               qs="${line#capital-gains:}"
+              qs=$(jq -rn --arg str "$qs" '$str | @uri')
               echo "➡️ Querying Capital Gains API: http://localhost:5003/capital-gains?$qs"
               response=$(curl -s "http://localhost:5003/capital-gains?$qs" | jq .)
-              echo "query: $line" >> $RESPONSE_FILE
-              echo "response: $response" >> $RESPONSE_FILE
           
             else
               echo "⚠️ Skipping unknown query format: $line"
               continue
             fi
           
-            echo "✅ Query: $line"
+            echo "query: $line" | tee -a $RESPONSE_FILE
+            echo "response: $response" | tee -a $RESPONSE_FILE`
           
-          echo "📥 Response: $response"
           echo "--------------------------------------"
           done < query.txt
 
