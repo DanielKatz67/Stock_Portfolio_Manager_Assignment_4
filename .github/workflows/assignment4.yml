@@ -248,11 +248,21 @@ jobs:
       - name: Verify Running Containers
         run: docker ps
 
-      - name: Execute POST requests for stocks # TODO: change the http://localhost:5001/stocks to some variable
+      - name: Execute POST requests for stocks
         run: |
-          for stock in stock1 stock2 stock3 stock4 stock5 stock6; do
-            curl -X POST -H "Content-Type: application/json" -d @${stock}.json http://localhost:5001/stocks
+          STOCKS_JSON="tests/stocks.json"
+          for row in $(jq -c '.[0:6][]' $STOCKS_JSON); do
+            echo "Posting stock: $row"
+            curl -X POST -H "Content-Type: application/json" -d "$row" http://localhost:5001/stocks
           done
+
+      - name: Verify the POST requests
+        run: |
+          echo "Response from server:"
+          RESPONSE=$(curl -s "http://localhost:5001/stocks")
+          echo "$RESPONSE"
+      
+          [ "$(echo "$RESPONSE" | jq '. | length')" -ge 6 ] && echo "✅ Verification successful" || (echo "❌ ERROR: Less than 6 stocks found" && exit 1)
 
       - name: Read query.txt and generate response.txt
         run: |
