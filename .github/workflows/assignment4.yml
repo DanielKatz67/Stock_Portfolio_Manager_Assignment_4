@@ -280,6 +280,11 @@ jobs:
             fi
           done < query.txt
 
+      - name: Print response.txt
+        run: | 
+          echo "Printing response.txt:"
+          cat response.txt
+
       - name: Upload response.txt
         uses: actions/upload-artifact@v4
         with:
