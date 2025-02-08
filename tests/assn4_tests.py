@@ -32,7 +32,7 @@ def load_stock_data():
 # Test 1
 # Runs once per module and automatically executes before tests
 @pytest.fixture(scope="module", autouse=True)
-def posted_stocks():
+def test_posted_stocks():
     """Posts all initial stocks and stores their IDs globally."""
     global STOCK_IDS
     for stock in STOCK_DATA[:3]:  # Posting only first 3 stocks
