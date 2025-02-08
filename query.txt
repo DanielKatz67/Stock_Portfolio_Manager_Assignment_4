@@ -1,1 +1,2 @@
 stocks:shares=7
+capital-gains:numsharesgt=30
