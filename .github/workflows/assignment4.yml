@@ -269,29 +269,51 @@ jobs:
       
           [ "$(echo "$RESPONSE" | jq '. | length')" -ge 6 ] && echo "✅ Verification successful" || (echo "❌ ERROR: Less than 6 stocks found" && exit 1)
 
+      - name: Debug API responses
+        run: |
+          echo "Checking all stocks:"
+          curl -s "http://localhost:5001/stocks"
+      
+          echo "Checking stocks with shares=7:"
+          curl -s "http://localhost:5001/stocks?shares=7"
+      
+          echo "Checking capital-gains with numsharesgt=30:"
+          curl -s "http://localhost:5003/capital-gains?numsharesgt=30"
+
       - name: Read query.txt and generate response.txt
         run: |
           RESPONSE_FILE="tests/response.txt"
+          echo "Reading queries from query.txt..."
+          cat query.txt
+          echo "--------------------------------------"
+          
           while IFS= read -r line; do
+            echo "📌 Processing query: $line"
+          
             if [[ $line == stocks:* ]]; then
               qs="${line#stocks: }"
-              response=$(curl -s "http://localhost:5001/stocks?$qs")
+              echo "➡️ Querying Stocks API: http://localhost:5001/stocks?$qs"
+              response=$(curl -s "http://localhost:5001/stocks?$qs" | jq .)
               echo "query: $line" >> $RESPONSE_FILE
               echo "response: $response" >> $RESPONSE_FILE
+          
             elif [[ $line == capital-gains:* ]]; then
               qs="${line#capital-gains: }"
-              response=$(curl -s "http://localhost:5003/capital-gains?$qs")
+              echo "➡️ Querying Capital Gains API: http://localhost:5003/capital-gains?$qs"
+              response=$(curl -s "http://localhost:5003/capital-gains?$qs" | jq .)
               echo "query: $line" >> $RESPONSE_FILE
               echo "response: $response" >> $RESPONSE_FILE
+          
             else
+              echo "⚠️ Skipping unknown query format: $line"
               continue
             fi
+          
+            echo "✅ Query: $line" | tee -a $RESPONSE_FILE
+            echo "📥 Response: $response" | tee -a $RESPONSE_FILE
+            echo "--------------------------------------" | tee -a $RESPONSE_FILE
+          
           done < query.txt
-
-      - name: Print response.txt
-        run: | 
-          echo "Printing response.txt:"
-          cat tests/response.txt
 
       - name: Upload response.txt
         uses: actions/upload-artifact@v4
