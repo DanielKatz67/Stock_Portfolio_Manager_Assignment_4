@@ -251,7 +251,7 @@ jobs:
       - name: Execute POST requests for stocks
         run: |
           STOCKS_JSON="tests/stocks.json"
-          for row in $(jq -c '.[0:6][]' $STOCKS_JSON); do
+          jq -c '.[0:6][]' "$STOCKS_JSON" | while read -r row; do
             echo "Posting stock: $row"
             curl -X POST -H "Content-Type: application/json" -d "$row" http://localhost:5001/stocks
           done
