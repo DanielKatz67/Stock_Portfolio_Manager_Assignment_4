@@ -290,6 +290,7 @@ jobs:
           echo "--------------------------------------"
           
           while IFS= read -r line || [[ -n "$line" ]]; do
+            response="" 
             echo "📌 Processing query: $line"
           
             if [[ $line == stocks:* ]]; then
@@ -310,9 +311,8 @@ jobs:
             fi
           
             echo "query: $line" | tee -a $RESPONSE_FILE
-            echo "response: $response" | tee -a $RESPONSE_FILE`
-          
-          echo "--------------------------------------"
+            echo "response: $response" | tee -a $RESPONSE_FILE
+            echo "--------------------------------------"
           done < query.txt
 
       - name: Upload response.txt
