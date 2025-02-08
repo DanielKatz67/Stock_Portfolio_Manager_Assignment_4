@@ -211,6 +211,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Create test response file
+        run: |
+          cd tests
+          touch response.txt
+
       - name: Download stock_portfolio_app image
         uses: actions/download-artifact@v4
         with:
@@ -237,7 +242,7 @@ jobs:
 
       - name: Set up Docker Compose
         id: set_up_docker_compose
-        uses: hoverkraft-tech/compose-action@v2.0.1 #todo: why use hoverkraft-tech/compose-action@v2.0.1? why compose another version?
+        uses: hoverkraft-tech/compose-action@v2.0.1
         with:
           compose-file: docker-compose-workflow.yml
           action: up
