@@ -23,10 +23,14 @@ def load_stock_data():
 def test_posted_stocks():
     """Posts all initial stocks and stores their IDs globally."""
     global STOCK_IDS
+    ids = set()
     for stock in STOCK_DATA[:3]:  # Posting only first 3 stocks
         response = requests.post(f"{BASE_URL}/stocks", json=stock)
         assert response.status_code == 201
-        STOCK_IDS[stock["symbol"]] = response.json()["id"]
+        stock_id = response.json()["id"]
+        assert stock_id not in ids  # Ensure the ID is unique
+        ids.add(stock_id)
+        STOCK_IDS[stock["symbol"]] = stock_id
 
 
 # Test 2
