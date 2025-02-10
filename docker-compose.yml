@@ -11,10 +11,10 @@ services:
     restart: always
 
   stock_service:
-    image: stock_portfolio_app:latest
+    image: **FAIL**
     container_name: stock_service_container
     ports:
-      - "5001:8000"  # Host: 5001 -> Container: 8000
+      - **FAIL**
     expose:
       - 8000
     environment:
