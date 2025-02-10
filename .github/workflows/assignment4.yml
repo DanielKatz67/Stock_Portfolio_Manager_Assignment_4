@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
       - name: Capture workflow start time
         run: echo "WORKFLOW_START_TIME=$(date -Iminutes)" >> $GITHUB_ENV
 
@@ -59,7 +58,6 @@ jobs:
           name: capital_gain_service_image
           path: /tmp/capital_gain_service_image.tar
 
-      # TODO: try to change the images to fail this step
       - name: Update log file
         if: always()
         run: |
