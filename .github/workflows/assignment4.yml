@@ -267,17 +267,6 @@ jobs:
       
           [ "$(echo "$RESPONSE" | jq '. | length')" -ge 6 ] && echo "✅ Verification successful" || (echo "❌ ERROR: Less than 6 stocks found" && exit 1)
 
-      - name: Debug API responses
-        run: |
-          echo "Checking all stocks:"
-          curl -s "http://localhost:5001/stocks"
-      
-          echo "Checking stocks with shares=7:"
-          curl -s "http://localhost:5001/stocks?shares=7"
-      
-          echo "Checking capital-gains with numsharesgt=30:"
-          curl -s "http://localhost:5003/capital-gains?numsharesgt=30"
-
       - name: Read query.txt and generate response.txt
         run: |
           RESPONSE_FILE="tests/response.txt"
