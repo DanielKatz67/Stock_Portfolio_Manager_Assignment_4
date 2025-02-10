@@ -269,6 +269,11 @@ jobs:
 
       - name: Read query.txt and generate response.txt
         run: |
+          if [ ! -f query.txt ]; then
+            echo "query.txt not found, skipping queries."
+            exit 0
+          fi
+          
           RESPONSE_FILE="tests/response.txt"
           > $RESPONSE_FILE  # Clear file before writing
           
