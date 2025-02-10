@@ -11,8 +11,7 @@ services:
     restart: always
 
   stock_service:
-    build:
-      context: ./stock_portfolio_app/
+    image: stock_portfolio_app:latest
     container_name: stock_service_container
     ports:
       - "5001:8000"  # Host: 5001 -> Container: 8000
@@ -26,8 +25,7 @@ services:
     restart: always
 
   capgain_service:
-    build:
-      context: ./capital_gain_service/
+    image: capital_gain_service:latest
     container_name: capgain_service_container
     ports:
       - "5003:8080"  # Host: 5003 -> Container: 8080

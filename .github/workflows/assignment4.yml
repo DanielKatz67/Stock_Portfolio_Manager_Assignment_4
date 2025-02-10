@@ -133,7 +133,7 @@ jobs:
         id: set_up_docker_compose
         uses: hoverkraft-tech/compose-action@v2.0.1
         with:
-          compose-file: docker-compose-workflow.yml
+          compose-file: docker-compose.yml
           action: up
 
       # Before starting the tests, wait for the container to initialize
@@ -198,7 +198,7 @@ jobs:
       - name: Tear down services
         uses: hoverkraft-tech/compose-action@v2.0.1
         with:
-          compose-file: docker-compose-workflow.yml
+          compose-file: docker-compose.yml
           action: down
 
   query:
@@ -244,7 +244,7 @@ jobs:
         id: set_up_docker_compose
         uses: hoverkraft-tech/compose-action@v2.0.1
         with:
-          compose-file: docker-compose-workflow.yml
+          compose-file: docker-compose.yml
           action: up
 
       - name: Wait for the container to initialize
@@ -324,5 +324,5 @@ jobs:
       - name: Tear down services
         uses: hoverkraft-tech/compose-action@v2.0.1
         with:
-          compose-file: docker-compose-workflow.yml
+          compose-file: docker-compose.yml
           action: down
