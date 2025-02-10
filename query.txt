@@ -9,5 +9,4 @@ capital-gains:numsharesgt=1&numshareslt=40
 capital-gains:numshareslt=40
 capital-gains:numsharesgt=1
 capital-gains:numsharesgt=30
-
-capital-gains:numsharesgt=30&numshareslt=32
+capital-gains:numsharesgt=30&numshareslt=36
