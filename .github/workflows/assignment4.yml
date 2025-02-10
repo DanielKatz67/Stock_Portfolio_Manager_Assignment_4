@@ -170,7 +170,7 @@ jobs:
         run: cat tests/assn4_test_results.txt || echo "assn4_test_results.txt not found!"
 
       - name: Update log file (Test Results)
-        if: always() && steps.set_up_docker_compose.outcome == 'success'
+        if: steps.set_up_docker_compose.outcome == 'success'
         run: |
           if [ "${{ steps.run_tests.outcome }}" == "success" ] ; then
           echo "tests succeeded" >> log.txt
