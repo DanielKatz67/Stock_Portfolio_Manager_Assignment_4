@@ -141,7 +141,7 @@ jobs:
       - name: Verify Running Containers
         run: docker ps
 
-      - name: Update log file
+      - name: Update log file (Container Setup)
         if: always()
         run: |
           if [ "${{ steps.set_up_docker_compose.outcome }}" == "success" ] ; then
@@ -163,13 +163,14 @@ jobs:
 
       - name: Run tests
         id: run_tests
+        if: steps.set_up_docker_compose.outcome == 'success'
         run: pytest -v tests/assn4_tests.py >> tests/assn4_test_results.txt
 
       - name: Verify Run tests
         run: cat tests/assn4_test_results.txt || echo "assn4_test_results.txt not found!"
 
-      - name: Update log file
-        if: always()
+      - name: Update log file (Test Results)
+        if: always() && steps.set_up_docker_compose.outcome == 'success'
         run: |
           if [ "${{ steps.run_tests.outcome }}" == "success" ] ; then
           echo "tests succeeded" >> log.txt
