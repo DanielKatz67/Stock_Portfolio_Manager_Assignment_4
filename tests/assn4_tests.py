@@ -46,7 +46,7 @@ def test_get_stock():
 def test_get_stocks():
     response = requests.get(f"{BASE_URL}/stocks")
     assert response.status_code == 200
-    assert len(response.json()) == 2
+    assert len(response.json()) == 3
 
 
 # Test 4
